@@ -1,0 +1,23 @@
+.tool-buttons {
+  height: 40vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10vh;
+}
+.button {
+  height: 80px;
+  width: 100px;
+  margin-bottom: 5px;
+}
+
+.shape-buttons {
+  height: 40vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
