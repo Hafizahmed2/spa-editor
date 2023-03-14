@@ -1,3 +1,4 @@
+import { ActiveTool } from "./../Shapes/types";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { setActiveTool } from "../../app/editorSlice";
@@ -6,6 +7,10 @@ import uuid from "react-uuid";
 import "./toolbar.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMousePointer } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsAlt } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsAltH } from "@fortawesome/free-solid-svg-icons";
 
 export const Toolbar = () => {
   const dispatch = useDispatch();
@@ -20,15 +25,15 @@ export const Toolbar = () => {
       id: uuid(),
       type: element,
       isSelected: false,
-      width: 50,
-      height: 50,
+      width: 150,
+      height: 150,
       x: 0,
       y: 0,
     };
     return Shape_obj;
   };
 
-  const Shapes = ["triangle", "square", "hexagon"];
+  const Shapes = ["rectangle", "square", "hexagon"];
 
   const DragStarted = (
     e: React.DragEvent<HTMLButtonElement>,
@@ -40,17 +45,25 @@ export const Toolbar = () => {
   return (
     <div>
       <div className="tool-buttons">
-        <button className="button" onClick={() => handleToolClick("select")}>
-          Select
-        </button>
-        <button className="button" onClick={() => handleToolClick("move")}>
-          Move
+        <button
+          className={activeTool === "select" ? "button active" : "button"}
+          onClick={() => handleToolClick("select")}
+        >
+          <FontAwesomeIcon icon={faMousePointer} />
         </button>
         <button
-          className="button"
+          className={activeTool === "move" ? "button active" : "button"}
+          onClick={() => handleToolClick("move")}
+        >
+          <FontAwesomeIcon icon={faArrowsAlt} />
+        </button>
+        <button
+          className={
+            activeTool === "closestPoints" ? "button active" : "button"
+          }
           onClick={() => handleToolClick("closestPoints")}
         >
-          Closest Point
+          <FontAwesomeIcon icon={faArrowsAltH} />
         </button>
       </div>
       <div className="shape-buttons">

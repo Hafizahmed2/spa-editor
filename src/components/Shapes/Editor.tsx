@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { ShapeType } from "./types";
 
-
 function Rectangle(props: ShapeType) {
     const { activeTool } = useSelector((state: RootState) => state.editor);
     const { id, x, y, height, width } = props
@@ -41,14 +40,12 @@ function Triangle(props: ShapeType) {
 export const Editor = () => {
     const dispatch = useDispatch();
     const { shapes, activeTool } = useSelector((state: RootState) => state.editor);
-    console.log(shapes);
 
     const onDragOver = (e: React.DragEvent<HTMLDivElement>) => { e.preventDefault() }
     const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
         if (activeTool === 'move') {
             let selected = JSON.parse(e.dataTransfer.getData('selected'))
             let currentShape = shapes.find((shape) => { return shape.id === selected.id }) as ShapeType
-            console.log(currentShape.x, currentShape.y, e.pageX, e.pageY);
             currentShape = { ...currentShape, x: e.pageX, y: e.pageY }
             dispatch(updateShape({ id: selected.id, shape: currentShape as ShapeType }))
         }
@@ -61,11 +58,11 @@ export const Editor = () => {
 
     return (
         <div onDragOver={e => onDragOver(e)} onDrop={e => onDrop(e)}>
-            <div style={{ width: '100vw', height: '100vh', margin: 'auto', backgroundColor: 'white' }} >
+            <div style={{ width: '100%', height: '100vh', margin: 'auto', backgroundColor: 'white' }} >
                 {
                     shapes.map((shape: any, index: number) => {
                         switch (shape.type) {
-                            case 'triangle':
+                            case 'rectangle':
                                 return <Rectangle key={index} {...shape} />;
                             case 'square':
                                 return <Circle key={index} {...shape} />;
