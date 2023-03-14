@@ -1,3 +1,4 @@
+import { ShapeType } from "./../components/Shapes/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Point } from "./geometry";
 
@@ -12,7 +13,7 @@ export interface Shape {
 
 export interface EditorState {
   activeTool: "select" | "move" | "closestPoints";
-  shapes: Shape[];
+  shapes: ShapeType[];
   closestPoint: { shapeId: number; point: Point } | null;
   selection: Shape[];
 }
@@ -28,7 +29,7 @@ const editorSlice = createSlice({
   name: "editor",
   initialState,
   reducers: {
-    addShape: (state, action: PayloadAction<Shape>) => {
+    addShape: (state, action: PayloadAction<ShapeType>) => {
       state.shapes.push(action.payload);
     },
     setActiveTool: (
@@ -37,9 +38,25 @@ const editorSlice = createSlice({
     ) => {
       state.activeTool = action.payload;
     },
+    updateShape: (
+      state,
+      action: PayloadAction<{ id: string; shape: ShapeType }>
+    ) => {
+      const index = state.shapes.findIndex(
+        (shape) => shape.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.shapes[index] = action.payload.shape;
+      }
+    },
+    deleteShape: (state, action: PayloadAction<string>) => {
+      state.shapes = state.shapes.filter(
+        (shape) => typeof shape.id !== action.payload
+      );
+    },
   },
 });
 
-export const { addShape, setActiveTool } = editorSlice.actions;
+export const { addShape, setActiveTool, updateShape } = editorSlice.actions;
 
 export const editorReducer = editorSlice.reducer;
